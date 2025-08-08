@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import useNuiEvent from '../../hooks/useNuiEvent';
-import InventoryControl from './InventoryControl';
 import InventoryHotbar from './InventoryHotbar';
 import { useAppDispatch } from '../../store';
 import { refreshSlots, setAdditionalMetadata, setupInventory } from '../../store/inventory';
@@ -13,6 +12,7 @@ import { closeTooltip } from '../../store/tooltip';
 import InventoryContext from './InventoryContext';
 import { closeContextMenu } from '../../store/contextMenu';
 import Fade from '../utils/transitions/Fade';
+import CharacterPanel from './CharacterPanel';
 
 const Inventory: React.FC = () => {
   const [inventoryVisible, setInventoryVisible] = useState(false);
@@ -44,8 +44,8 @@ const Inventory: React.FC = () => {
     <>
       <Fade in={inventoryVisible}>
         <div className="inventory-wrapper">
+          <CharacterPanel />
           <LeftInventory />
-          <InventoryControl />
           <RightInventory />
           <Tooltip />
           <InventoryContext />
