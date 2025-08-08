@@ -5,6 +5,7 @@ import InventorySlot from './InventorySlot';
 import { getTotalWeight } from '../../helpers';
 import { useAppSelector } from '../../store';
 import { useIntersection } from '../../hooks/useIntersection';
+import { Items } from '../../store/items';
 
 const PAGE_SIZE = 30;
 
@@ -17,6 +18,17 @@ const InventoryGrid: React.FC<{ inventory: Inventory }> = ({ inventory }) => {
   const containerRef = useRef(null);
   const { ref, entry } = useIntersection({ threshold: 0.5 });
   const isBusy = useAppSelector((state) => state.inventory.isBusy);
+  const [query, setQuery] = useState('');
+
+  const normalizedQuery = query.trim().toLowerCase();
+  const visibleItems = useMemo(() => {
+    if (!normalizedQuery) return inventory.items;
+    return inventory.items.filter((slot) => {
+      const name = slot?.name || '';
+      const label = (slot?.metadata?.label || Items[name]?.label || name).toLowerCase();
+      return label.includes(normalizedQuery) || name.toLowerCase().includes(normalizedQuery);
+    });
+  }, [inventory.items, normalizedQuery]);
 
   useEffect(() => {
     if (entry && entry.isIntersecting) {
@@ -37,9 +49,17 @@ const InventoryGrid: React.FC<{ inventory: Inventory }> = ({ inventory }) => {
           </div>
           <WeightBar percent={inventory.maxWeight ? (weight / inventory.maxWeight) * 100 : 0} />
         </div>
+        {inventory.type === 'player' && (
+          <input
+            className="inventory-search"
+            placeholder="Search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        )}
         <div className="inventory-grid-container" ref={containerRef}>
           <>
-            {inventory.items.slice(0, (page + 1) * PAGE_SIZE).map((item, index) => (
+            {visibleItems.slice(0, (page + 1) * PAGE_SIZE).map((item, index) => (
               <InventorySlot
                 key={`${inventory.type}-${inventory.id}-${item.slot}`}
                 item={item}

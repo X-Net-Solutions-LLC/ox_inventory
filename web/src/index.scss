@@ -125,6 +125,72 @@ button:active {
   gap: 20px;
 }
 
+// New: left character panel layout similar to screenshot
+.character-panel {
+  display: flex;
+  flex-direction: column;
+  width: 28vw;
+  max-width: 480px;
+  min-width: 360px;
+  gap: 16px;
+}
+
+.character-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.character-title-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  p, span { font-size: 16px; }
+}
+
+.character-body {
+  background-color: $secondaryColor;
+  border: 1px inset rgba(0,0,0,0.2);
+  border-radius: 4px;
+  height: calc($containerSize);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body-silhouette {
+  width: 60%;
+  height: 90%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+  border-radius: 8px;
+  opacity: 0.35;
+}
+
+.character-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.character-personal-info-title {
+  font-size: 14px;
+  color: $textColor;
+}
+
+// Search input for player inventory
+.inventory-search {
+  transition: 200ms;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-family: $mainFont;
+  font-size: 14px;
+  outline: none;
+  border: none;
+  color: #fff;
+  background-color: $secondaryColor;
+  &:focus-within { background-color: $secondaryColorDark; }
+}
+
 .inventory-control {
   display: flex;
 
